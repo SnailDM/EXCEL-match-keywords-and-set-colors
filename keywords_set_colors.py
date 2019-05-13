@@ -52,7 +52,8 @@ def model_set_colors(data, data_result, cate_data):
         #原关键词列表删除字符长度短的关键词
         num_match_words = len(match_words)
         for i in range(num_match_words):
-            keyword_split.remove(match_words[i])
+            if match_words[i] in keyword_split:
+                keyword_split.remove(match_words[i])
         keyword_set= keyword_split
         keyword_sep = ''
         for each in keyword_set:
