@@ -17,9 +17,11 @@ def model_set_colors(data, data_result, cate_data):
     #设定worksheet的初始写入行列
     work_row = 0
     work_col = 0
+    work_col2 = 1
 
     for num in range(nums_data):
         txt = data.loc[num, '文本描述']
+        id_data = data.loc[num, '文本ID']
         txt = str(txt).lower()
         match_str = ''  #保存匹配到的关键词
         for i in range(keyword_num):
@@ -57,7 +59,8 @@ def model_set_colors(data, data_result, cate_data):
             keyword_sep = keyword_sep + each + '|'
         keyword_sep = keyword_sep.strip('|')
         #print('keyword_sep:', keyword_sep)
-
+        if(len(keyword_sep)) == 0:
+            continue
         #用所有关键词将整段话分割，再插入富字符串，然后捆绑颜色、关键词和后面的文本，需注意一一对应
         temp_list = re.split(keyword_sep, txt)
         params = []
@@ -67,7 +70,8 @@ def model_set_colors(data, data_result, cate_data):
                params.extend((red,keyword_set[i-1],temp_list[i]))
             else:
                 params.append(temp_list[i])
-        worksheet.write_rich_string(work_row, work_col, *params)
+        worksheet.write(work_row, work_col, id_data)
+        worksheet.write_rich_string(work_row, work_col2, *params)
         work_row = work_row+1
     workbook.close()
 
